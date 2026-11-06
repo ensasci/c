@@ -9,6 +9,11 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         /* SİNEMATİK RETRO TERMINAL STİLİ */
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
         body {
             background-color: #050505;
             color: #00ff66;
@@ -19,9 +24,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            /* Mobilde görünür alan: tarayıcı çubukları ve klavye düşülür (JS günceller) */
+            position: fixed;
+            left: 0;
+            top: var(--app-top, 0px);
+            width: 100%;
             height: 100vh;
+            height: var(--app-height, 100dvh);
             box-sizing: border-box;
-            position: relative;
         }
 
         /* TÜPLÜ EKRAN (CRT) EFEKTİ */
@@ -39,7 +49,8 @@
         #terminal-window {
             width: 100%;
             max-width: 850px;
-            height: 85vh;
+            height: 85%;
+            box-sizing: border-box;
             background-color: #000;
             border: 2px solid #00ff66;
             border-radius: 8px;
@@ -88,6 +99,8 @@
             top: 0; left: 0;
             width: 1px; height: 1px;
             z-index: -1;
+            /* 16px altı yazı iOS'ta odaklanınca sayfayı yakınlaştırır */
+            font-size: 16px;
         }
 
         .highlight {
@@ -166,6 +179,22 @@
         @keyframes chunkShake {
             0% { transform: translate(1px, 1px) rotate(0deg); }
             100% { transform: translate(-1px, -2px) rotate(-1deg); }
+        }
+
+        /* TELEFON */
+        @media (max-width: 600px) {
+            body {
+                padding: 8px;
+                padding-bottom: max(8px, env(safe-area-inset-bottom));
+            }
+            #terminal-window {
+                height: 100%;
+                padding: 14px;
+            }
+            #console {
+                font-size: 14px;
+                line-height: 1.5;
+            }
         }
     </style>
 </head>
@@ -285,6 +314,22 @@
         function scrollToBottom() {
             windowDiv.scrollTop = windowDiv.scrollHeight;
         }
+
+        // Terminali görünür alana sığdırır; tarayıcı çubukları ve klavye açılınca yeniden hesaplanır
+        function syncViewport() {
+            const vv = window.visualViewport;
+            const rootStyle = document.documentElement.style;
+            rootStyle.setProperty('--app-height', (vv ? vv.height : window.innerHeight) + 'px');
+            rootStyle.setProperty('--app-top', (vv ? vv.offsetTop : 0) + 'px');
+            scrollToBottom();
+        }
+
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', syncViewport);
+            window.visualViewport.addEventListener('scroll', syncViewport);
+        }
+        window.addEventListener('resize', syncViewport);
+        syncViewport();
 
         hiddenInput.addEventListener('input', function () {
             if (currentState === "AWAITING_PASSWORD" || currentState === "AWAITING_ANSWER") {
