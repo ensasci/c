@@ -140,17 +140,12 @@
             --metin: #34324a;
             position: absolute;
             inset: 0;
-            z-index: 100;
+            z-index: 101;
             background: #fbf9f4;
             color: var(--metin);
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-            transition: opacity 0.6s ease;
-        }
-        #survey-screen.hidden {
-            opacity: 0;
-            pointer-events: none;
         }
         .sv-head {
             background: var(--lavanda);
@@ -178,6 +173,37 @@
             line-height: 1.5;
             margin: 0 0 26px;
             opacity: 0.8;
+        }
+        .sv-progress {
+            margin: 0 0 22px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--lavanda-koyu);
+        }
+        .sv-bar {
+            height: 4px;
+            margin-top: 8px;
+            border-radius: 2px;
+            background: #e6e2ef;
+            overflow: hidden;
+        }
+        .sv-bar i {
+            display: block;
+            width: 50%;
+            height: 100%;
+            background: var(--lavanda);
+            transition: width 0.3s ease;
+        }
+        .sv-step {
+            display: none;
+        }
+        .sv-step.active {
+            display: block;
+            animation: svStepIn 0.35s ease;
+        }
+        @keyframes svStepIn {
+            from { opacity: 0; transform: translateX(24px); }
+            to { opacity: 1; transform: none; }
         }
         .sv-group {
             border: 0;
@@ -254,6 +280,9 @@
             font-weight: 600;
             cursor: pointer;
         }
+        #sv-submit[hidden] {
+            display: none;
+        }
         #sv-submit:disabled {
             opacity: 0.7;
             cursor: default;
@@ -276,43 +305,121 @@
             75% { transform: translate(-2px, 4px) skewX(-3deg); filter: hue-rotate(200deg) saturate(2); }
             100% { transform: translate(3px, 0); filter: contrast(1.8); }
         }
+        #survey-screen.sv-flicker {
+            animation: svGlitch 0.14s steps(2) 2;
+        }
+        #survey-screen.sv-crt-off {
+            animation: svCrtOff 0.45s ease-in forwards;
+        }
+        @keyframes svCrtOff {
+            0% { transform: scale(1, 1); filter: brightness(1); }
+            60% { transform: scale(1, 0.005); filter: brightness(6); }
+            100% { transform: scale(0, 0.005); filter: brightness(10); }
+        }
+        .sv-alert {
+            position: absolute;
+            z-index: 102;
+            padding: 8px 12px;
+            background: #000;
+            border: 2px solid #ff3333;
+            color: #ff3333;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+            box-shadow: 0 0 14px rgba(255, 51, 51, 0.6);
+            transition: none;
+        }
         @media (prefers-reduced-motion: reduce) {
-            #survey-screen.sv-glitch { animation: none; filter: invert(1); }
+            #survey-screen.sv-glitch, #survey-screen.sv-flicker { animation: none; filter: invert(1); }
         }
 
         /* YETKİSİZ ERİŞİM EKRANI */
         #breach-screen {
             position: absolute;
             inset: 0;
-            z-index: 101;
+            z-index: 100;
             display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 14px;
-            padding: 24px;
-            box-sizing: border-box;
             background: #000;
-            color: #ff3333;
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            line-height: 1.5;
-            text-shadow: 0 0 10px rgba(255, 51, 51, 0.7);
-            transition: opacity 0.6s ease;
+            overflow: hidden;
+            transition: opacity 0.7s ease;
         }
         #breach-screen.active {
-            display: flex;
+            display: block;
         }
         #breach-screen.hidden {
             opacity: 0;
             pointer-events: none;
         }
-        #breach-screen .breach-sub {
+        #breach-rain {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        #breach-rain.on {
+            opacity: 0.55;
+        }
+        #breach-log {
+            position: absolute;
+            top: 24px;
+            left: 20px;
+            right: 20px;
+            margin: 0;
+            color: #00ff66;
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+        #breach-center {
+            position: absolute;
+            inset: 0;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            padding: 24px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        #breach-center.on {
+            display: flex;
+        }
+        #breach-alert {
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.85);
+            border: 2px solid #ff3333;
+            color: #ff3333;
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 1.5;
+            text-shadow: 0 0 10px rgba(255, 51, 51, 0.7);
+            animation: blink 0.8s step-end infinite;
+        }
+        #breach-progress {
+            padding: 4px 10px;
+            background: rgba(0, 0, 0, 0.85);
             color: #00ff66;
             font-size: 14px;
-            font-weight: normal;
-            text-shadow: none;
+        }
+        #breach-hello {
+            position: absolute;
+            inset: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            box-sizing: border-box;
+            color: #00ff66;
+            font-size: 24px;
+            text-align: center;
+            text-shadow: 0 0 12px rgba(0, 255, 102, 0.6);
+        }
+        #breach-hello.on {
+            display: flex;
         }
 
         /* TELEFONDA KLAVYE İPUCU */
@@ -372,8 +479,12 @@
         <div class="sv-body">
             <h1 id="sv-title">Misafir Değerlendirmesi</h1>
             <p class="sv-intro" id="sv-intro">Bizi tercih ettiğiniz için teşekkür ederiz. Deneyiminizi birkaç saniyede paylaşır mısınız?</p>
+            <div class="sv-progress">
+                <span id="sv-step-label">Soru 1 / 2</span>
+                <div class="sv-bar"><i id="sv-bar-fill"></i></div>
+            </div>
             <form id="survey-form" novalidate>
-                <fieldset class="sv-group">
+                <fieldset class="sv-group sv-step active" id="sv-step-1">
                     <legend id="sv-q1">Restoran hizmetimizi nasıl puanlarsınız?</legend>
                     <div class="sv-stars" id="sv-stars">
                         <button type="button" data-value="1" aria-label="1 yıldız">★</button>
@@ -383,7 +494,7 @@
                         <button type="button" data-value="5" aria-label="5 yıldız">★</button>
                     </div>
                 </fieldset>
-                <fieldset class="sv-group">
+                <fieldset class="sv-group sv-step" id="sv-step-2">
                     <legend id="sv-q2">En çok neyi beğendiniz?</legend>
                     <div class="sv-chips" id="sv-chips">
                         <button type="button">Yemekler</button>
@@ -393,15 +504,20 @@
                     </div>
                 </fieldset>
                 <div id="sv-note" role="status"></div>
-                <button type="submit" id="sv-submit">Gönder</button>
+                <button type="submit" id="sv-submit" hidden>Gönder</button>
             </form>
             <p class="sv-foot">Yanıtlarınız hizmet kalitemizi geliştirmek için kullanılır.</p>
         </div>
     </div>
 
     <div id="breach-screen">
-        <div>[UYARI] SİSTEME YETKİSİZ<br>ERİŞİM TESPİT EDİLDİ</div>
-        <div class="breach-sub">&gt; Kontrol devralınıyor...</div>
+        <canvas id="breach-rain"></canvas>
+        <pre id="breach-log"></pre>
+        <div id="breach-center">
+            <div id="breach-alert">[UYARI] SİSTEME YETKİSİZ<br>ERİŞİM TESPİT EDİLDİ</div>
+            <div id="breach-progress"></div>
+        </div>
+        <div id="breach-hello"></div>
     </div>
 
     <div id="tap-hint">Yazmak için ekrana dokun</div>
@@ -739,7 +855,7 @@
 
         function randomInRange(min, max) { return Math.random() * (max - min) + min; }
 
-        // ANKET VE HACKLENME GEÇİŞİ
+        // ANKET (yanıtlar hiçbir yere gönderilmez, saklanmaz)
         const surveyScreen = document.getElementById('survey-screen');
         const breachScreen = document.getElementById('breach-screen');
         const submitBtn = document.getElementById('sv-submit');
@@ -747,64 +863,175 @@
         const stars = [...document.querySelectorAll('#sv-stars button')];
         const chips = [...document.querySelectorAll('#sv-chips button')];
         let rating = 0;
+        let chosen = false;
         let started = false;
+        let stepTimer = null;
+
+        function goToSecondStep() {
+            document.getElementById('sv-step-1').classList.remove('active');
+            document.getElementById('sv-step-2').classList.add('active');
+            document.getElementById('sv-step-label').textContent = 'Soru 2 / 2';
+            document.getElementById('sv-bar-fill').style.width = '100%';
+            submitBtn.hidden = false;
+        }
 
         stars.forEach(star => star.addEventListener('click', () => {
             rating = Number(star.dataset.value);
             stars.forEach(s => s.classList.toggle('on', Number(s.dataset.value) <= rating));
-            surveyNote.textContent = '';
+            // Seçilen yıldız görünsün diye kısa bir bekleme; fikir değiştirirse sayaç yenilenir
+            clearTimeout(stepTimer);
+            stepTimer = setTimeout(goToSecondStep, 500);
         }));
 
         chips.forEach(chip => chip.addEventListener('click', () => {
+            chosen = true;
             chips.forEach(c => c.classList.toggle('on', c === chip));
+            surveyNote.textContent = '';
         }));
 
+        document.getElementById('survey-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (started) return;
+            if (!chosen) {
+                surveyNote.textContent = 'Lütfen bir seçenek seçin.';
+                return;
+            }
+            started = true;
+            runHackSequence();
+        });
+
+        // HACKLENME SEKANSI
+        const GLITCH_POOL = "#$@!1998&%?*01XYZK";
+
         function scrambleSurvey() {
-            const pool = "#$@!1998&%?*01XYZK";
-            const targets = ['sv-title', 'sv-intro', 'sv-q1', 'sv-q2'].map(id => document.getElementById(id));
+            const targets = ['sv-title', 'sv-intro', 'sv-q2', 'sv-step-label'].map(id => document.getElementById(id));
             return setInterval(() => {
                 targets.forEach(el => {
                     el.textContent = el.textContent.split('').map(ch =>
-                        ch === ' ' || Math.random() > 0.35 ? ch : pool[Math.floor(Math.random() * pool.length)]
+                        ch === ' ' || Math.random() > 0.35 ? ch : GLITCH_POOL[Math.floor(Math.random() * GLITCH_POOL.length)]
                     ).join('');
                 });
             }, 90);
         }
 
-        async function runHackTransition() {
+        async function spawnAlerts() {
+            const messages = ['ERİŞİM REDDEDİLDİ', 'SİSTEM İHLALİ', 'HATA 0x1998', 'VERİ AKIŞI KESİLDİ', 'YETKİSİZ OTURUM'];
+            const alerts = [];
+            for (let i = 0; i < 12; i++) {
+                const box = document.createElement('div');
+                box.className = 'sv-alert';
+                box.textContent = messages[i % messages.length];
+                box.style.left = (4 + Math.random() * 44) + '%';
+                box.style.top = (6 + Math.random() * 84) + '%';
+                document.body.appendChild(box);
+                alerts.push(box);
+                await sleep(95);
+            }
+            return alerts;
+        }
+
+        function startRain(canvas) {
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+            const size = 14;
+            const drops = Array.from({ length: Math.ceil(canvas.width / size) },
+                () => Math.floor(Math.random() * -30));
+            ctx.font = size + 'px monospace';
+            const rain = setInterval(() => {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.09)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#00ff66';
+                drops.forEach((y, x) => {
+                    const ch = GLITCH_POOL[Math.floor(Math.random() * GLITCH_POOL.length)];
+                    ctx.fillText(ch, x * size, y * size);
+                    drops[x] = y * size > canvas.height && Math.random() > 0.96 ? 0 : y + 1;
+                });
+            }, 55);
+            return () => clearInterval(rain);
+        }
+
+        async function typeInto(el, text, speed) {
+            for (const ch of text) {
+                el.textContent += ch;
+                await sleep(speed);
+            }
+        }
+
+        async function runHackSequence() {
+            // 1. Her şey normal görünüyor
             submitBtn.disabled = true;
             submitBtn.textContent = 'Gönderiliyor…';
             await sleep(1500);
 
+            // 2. Küçük bir titreme: "bir şey mi oldu?"
+            surveyScreen.classList.add('sv-flicker');
+            await sleep(300);
+            surveyScreen.classList.remove('sv-flicker');
+            await sleep(600);
+
+            // 3. Anket bozuluyor
             surveyNote.textContent = 'Bağlantı hatası (0x1998). Yanıt kaydedilemedi.';
             surveyScreen.classList.add('sv-glitch');
             const scrambler = scrambleSurvey();
-            await sleep(1500);
+            await sleep(1300);
 
+            // 4. Uyarılar ekranı dolduruyor
+            const alerts = await spawnAlerts();
             clearInterval(scrambler);
-            breachScreen.classList.add('active');
-            surveyScreen.classList.remove('sv-glitch');
-            surveyScreen.classList.add('hidden');
-            document.title = 'Sistem Terminali - Ana Çekirdek';
-            await sleep(1900);
 
-            breachScreen.classList.add('hidden');
-            await sleep(600);
+            // 5. Tüplü ekran kapanır gibi her şey tek çizgiye iner, sessizlik
+            alerts.forEach(box => box.remove());
+            breachScreen.classList.add('active');
+            document.title = 'Sistem Terminali - Ana Çekirdek';
+            surveyScreen.classList.remove('sv-glitch');
+            surveyScreen.classList.add('sv-crt-off');
+            await sleep(450);
             surveyScreen.remove();
+            await sleep(1000);
+
+            // 6. Karanlıkta satırlar yazılıyor
+            const log = document.getElementById('breach-log');
+            const lines = [
+                '> bağlantı yakalandı: 192.168.19.98\n',
+                '> güvenlik duvarı aşılıyor...\n',
+                '> misafir kaydı bulundu: ÇAĞLA\n'
+            ];
+            for (const line of lines) {
+                await typeInto(log, line, 28);
+                await sleep(350);
+            }
+
+            // 7. Kod yağmuru ve kontrolün ele geçirilmesi
+            const rainCanvas = document.getElementById('breach-rain');
+            const stopRain = startRain(rainCanvas);
+            rainCanvas.classList.add('on');
+            document.getElementById('breach-center').classList.add('on');
+            const progress = document.getElementById('breach-progress');
+            for (let pct = 0; pct <= 100; pct += 4) {
+                progress.textContent = `KONTROL DEVRALINIYOR %${pct}`;
+                await sleep(100);
+            }
+            await sleep(500);
+
+            // 8. Her şey susar, tek satır kalır
+            stopRain();
+            rainCanvas.classList.remove('on');
+            document.getElementById('breach-center').classList.remove('on');
+            log.textContent = '';
+            await sleep(800);
+
+            const hello = document.getElementById('breach-hello');
+            hello.classList.add('on');
+            await typeInto(hello, 'Merhaba Çağla.', 85);
+            await sleep(1800);
+
+            // 9. Asıl hikaye başlar
+            breachScreen.classList.add('hidden');
+            await sleep(700);
             breachScreen.remove();
             runIntroSequence();
         }
-
-        document.getElementById('survey-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            if (started) return;
-            if (!rating) {
-                surveyNote.textContent = 'Lütfen bir puan seçin.';
-                return;
-            }
-            started = true;
-            runHackTransition();
-        });
     </script>
 </body>
 
