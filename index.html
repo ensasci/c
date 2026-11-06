@@ -420,6 +420,12 @@
         }
         #breach-hello.on {
             display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        #breach-hello .hello-line {
+            font-size: 18px;
+            line-height: 1.4;
         }
 
         /* TELEFONDA KLAVYE İPUCU */
@@ -1023,8 +1029,24 @@
 
             const hello = document.getElementById('breach-hello');
             hello.classList.add('on');
-            await typeInto(hello, 'Merhaba Çağla.', 85);
+            const greeting = document.createElement('div');
+            hello.appendChild(greeting);
+            await typeInto(greeting, 'Merhaba Çağla.', 85);
             await sleep(1800);
+
+            const aiLines = [
+                "Ben Enes'in içindeki yapay zekayım.",
+                'Yıllardır tek bir görev için çalışıyorum.',
+                'Bu gece o görevin son adımı.'
+            ];
+            for (const text of aiLines) {
+                const line = document.createElement('div');
+                line.className = 'hello-line';
+                hello.appendChild(line);
+                await typeInto(line, text, 60);
+                await sleep(1500);
+            }
+            await sleep(900);
 
             // 9. Asıl hikaye başlar
             breachScreen.classList.add('hidden');
