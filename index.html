@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Terminali - Ana Çekirdek</title>
+    <!-- Konfeti Kütüphanesi -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        /* SİNEMATİK RETRO TERMINAL STİLİ */
+        body {
+            background-color: #050505;
+            color: #00ff66;
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* TÜPLÜ EKRAN (CRT) EFEKTİ */
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 99;
+            background-size: 100% 3px, 6px 100%;
+            pointer-events: none;
+        }
+
+        #terminal-window {
+            width: 100%;
+            max-width: 850px;
+            height: 85vh;
+            background-color: #000;
+            border: 2px solid #00ff66;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 30px rgba(0, 255, 102, 0.15);
+            position: relative;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            transition: border-color 0.5s, box-shadow 0.5s;
+        }
+
+        /* ACİL DURUM MODU (KIRMIZI ALARM) */
+        #terminal-window.emergency {
+            border-color: #ff3333;
+            box-shadow: 0 0 40px rgba(255, 51, 51, 0.4);
+            color: #ff3333 !important;
+        }
+
+        #console {
+            font-size: 15px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background-color: #00ff66;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+        #terminal-window.emergency .cursor {
+            background-color: #ff3333;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        #hidden-input {
+            position: fixed;
+            opacity: 0;
+            top: 0; left: 0;
+            width: 1px; height: 1px;
+            z-index: -1;
+        }
+
+        .highlight {
+            color: #ffffff;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(255,255,255,0.6);
+        }
+        #terminal-window.emergency .highlight {
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(255,51,51,0.6);
+        }
+
+        .error {
+            color: #ff3333;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 51, 51, 0.5);
+        }
+
+        .warning {
+            color: #ffcc00;
+            font-weight: bold;
+            text-shadow: 0 0 3px rgba(255, 204, 0, 0.4);
+        }
+
+        /* AÇILIŞ EKRANI */
+        #boot-screen {
+            position: fixed;
+            inset: 0;
+            background: #050505;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 22px;
+            z-index: 50;
+            transition: opacity 0.8s ease;
+            text-align: center;
+            padding: 20px;
+        }
+        #boot-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #boot-screen .boot-title {
+            font-size: 13px;
+            letter-spacing: 3px;
+            opacity: 0.75;
+        }
+        #start-btn {
+            background: transparent;
+            color: #00ff66;
+            border: 2px solid #00ff66;
+            border-radius: 6px;
+            padding: 14px 34px;
+            font-family: inherit;
+            font-size: 16px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.25);
+            animation: pulse 1.8s ease-in-out infinite;
+            transition: background 0.2s, color 0.2s;
+        }
+        #start-btn:hover, #start-btn:active {
+            background: #00ff66;
+            color: #000;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 12px rgba(0, 255, 102, 0.2); }
+            50% { box-shadow: 0 0 32px rgba(0, 255, 102, 0.55); }
+        }
+
+        .shake {
+            animation: chunkShake 0.5s linear infinite;
+        }
+
+        @keyframes chunkShake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            100% { transform: translate(-1px, -2px) rotate(-1deg); }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="boot-screen">
+        <div class="boot-title">Enes-OS // ÇEKİRDEK HAZIR</div>
+        <button id="start-btn">&gt; SİSTEMİ BAŞLAT_</button>
+    </div>
+
+    <div id="terminal-window">
+        <div id="console"></div>
+        <span class="cursor" id="cursor"></span>
+    </div>
+
+    <input type="text" id="hidden-input" autocomplete="off" spellcheck="false">
+
+    <script>
+        const consoleDiv = document.getElementById('console');
+        const hiddenInput = document.getElementById('hidden-input');
+        const windowDiv = document.getElementById('terminal-window');
+
+        let currentState = "INTRO";
+        const correctPassword = "1209";
+        let currentLine = "";
+        // Yazı akış hızı çarpanı: 1 = orijinal hız, büyüdükçe yavaşlar
+        const TYPE_SPEED_FACTOR = 1.3;
+
+        function typeText(text, speed = 35) {
+            return new Promise(resolve => {
+                let i = 0;
+                hiddenInput.disabled = true;
+
+                function type() {
+                    if (i < text.length) {
+                        currentLine += text.charAt(i);
+                        consoleDiv.innerHTML = currentLine;
+                        scrollToBottom();
+                        i++;
+                        setTimeout(type, speed * TYPE_SPEED_FACTOR);
+                    } else {
+                        hiddenInput.disabled = false;
+                        hiddenInput.focus();
+                        resolve();
+                    }
+                }
+                type();
+            });
+        }
+
+        // MATRIX CIPHER (ŞİFRE ÇÖZÜLME) MOTORU
+        function typeDecryptText(text) {
+            return new Promise(resolve => {
+                hiddenInput.disabled = true;
+                let iterations = 0;
+                const pool = "#$@!1998&%?*01XYZK"; 
+                const baseLine = currentLine; 
+                
+                let interval = setInterval(() => {
+                    let scrambled = text.split("").map((char, index) => {
+                        if (char === " ") return " ";
+                        if (index < iterations / 2) return char;
+                        return pool[Math.floor(Math.random() * pool.length)];
+                    }).join("");
+                    
+                    consoleDiv.innerHTML = baseLine + scrambled;
+                    scrollToBottom();
+                    
+                    if (iterations >= text.length * 2) {
+                        clearInterval(interval);
+                        currentLine = baseLine + text;
+                        consoleDiv.innerHTML = currentLine;
+                        hiddenInput.disabled = false;
+                        hiddenInput.focus();
+                        resolve();
+                    }
+                    iterations++;
+                }, 25);
+            });
+        }
+
+        function typeProgressBar(label, duration = 1800) {
+            return new Promise(resolve => {
+                hiddenInput.disabled = true;
+                let progress = 0;
+                const steps = 20;
+                const stepDuration = duration / steps;
+                
+                currentLine += `\n> ${label}\n[`;
+                
+                function drawBar() {
+                    if (progress <= steps) {
+                        let bar = "";
+                        for(let i=0; i<steps; i++) {
+                            if(i < progress) bar += "█";
+                            else bar += "░";
+                        }
+                        let pct = Math.floor((progress / steps) * 100);
+                        
+                        consoleDiv.innerHTML = currentLine + bar + `] ${pct}%`;
+                        scrollToBottom();
+                        progress++;
+                        setTimeout(drawBar, stepDuration);
+                    } else {
+                        currentLine += "████████████████████] 100% [BAŞARILI]\n";
+                        consoleDiv.innerHTML = currentLine;
+                        hiddenInput.disabled = false;
+                        hiddenInput.focus();
+                        resolve();
+                    }
+                }
+                drawBar();
+            });
+        }
+
+        function scrollToBottom() {
+            windowDiv.scrollTop = windowDiv.scrollHeight;
+        }
+
+        hiddenInput.addEventListener('input', function () {
+            if (currentState === "AWAITING_PASSWORD" || currentState === "AWAITING_ANSWER") {
+                const val = hiddenInput.value;
+                consoleDiv.innerHTML = currentLine + val;
+                scrollToBottom();
+            }
+        });
+
+        hiddenInput.addEventListener('keydown', async function (e) {
+            if (e.key === 'Enter') {
+                if (currentState === "AWAITING_PASSWORD" || currentState === "AWAITING_ANSWER") {
+                    const inputValue = hiddenInput.value.trim().toUpperCase();
+                    currentLine += hiddenInput.value + "\n";
+                    consoleDiv.innerHTML = currentLine;
+                    hiddenInput.value = '';
+
+                    if (currentState === "AWAITING_PASSWORD") {
+                        if (inputValue === correctPassword) {
+                            currentState = "PROCESSING_PART_2";
+                            await runPart2Sequence();
+                        } else {
+                            await typeText("\n<span class='error'>[HATA] Geçersiz Yetki Anahtarı. Erişim Reddedildi. Lütfen çiçeklerdeki gizemi tekrar kontrol et.</span>\n\nC:\\Sistem\\Kritik_Giriş> Lütfen 4 haneli dekoder anahtarını giriniz: ", 20);
+                        }
+                    }
+                    else if (currentState === "AWAITING_ANSWER") {
+                        if (inputValue === 'E' || inputValue === 'EVET' || inputValue === 'Y' || inputValue === 'YES') {
+                            currentState = "COMPLETED";
+                            windowDiv.classList.remove('shake', 'emergency'); 
+                            await typeText("\n\n> GELECEK VERİSİ SAKLANDI! Ömür boyu mutluluk sözleşmesi kalıcı bellek hücresine (ROM) mühürlendi.\n", 40);
+                            await sleep(600);
+                            await typeText("> Şimdi lütfen başını yavaşça ekrandan kaldır, arkana dön ve gözlerime bak...\n", 50);
+                            fireConfetti();
+                        } else {
+                            await typeText("\n<span class='error'>[KRİTİK UYARI]: Bu sunucuda sensiz bir dünya senaryosu [NullReferenceException] hatası vermektedir.</span>\n> Geleceğini mühürlemek için 'EVET' yazarak onay verin: ", 30);
+                        }
+                    }
+                }
+            }
+        });
+
+        document.addEventListener('click', () => { hiddenInput.focus(); });
+
+        // SİNEMATİK AKIŞ - ETAP 1 (INTRO)
+        async function runIntroSequence() {
+            await typeText("Enes-OS [Version 1.1998.28.07.CORE]\n", 25);
+            await typeText("(c) Enes Backend Architecture. Tüm yönetim hakları Çağla'ya aittir.\n\n", 25);
+            await sleep(800);
+
+            await typeText("> Kıtalararası ağ altyapısı taranıyor...\n", 30);
+            await typeText("> [NET] Bağlantı uçları: <span class='highlight'>Esenyurt Çekirdek Düğümü (Avrupa)</span> <---> <span class='highlight'>Ümraniye Ana Sunucusu (Anadolu)</span>\n", 35);
+            await sleep(500);
+
+            await typeText("<span class='warning'>> [POTANSİYEL GECİKME UYARISI]: İki nokta arasında 52 km mesafe ve yoğun köprü/metrobüs trafiği algılandı.</span>\n", 30);
+            await sleep(600);
+
+            await typeProgressBar("Mesafe Engeli Aşılıyor (Aşk-VPN & Tunneling Protocol)", 2000);
+            await typeText("> [OK] Kıtalararası özel veri tüneli başarıyla kuruldu. İstanbul trafiği ve coğrafi engeller bypass edildi. Gecikme süresi (Latency): 0.00ms.\n", 35);
+            await sleep(800);
+
+            await typeText("> Yerel depolama birimi taranıyor... Tarih dizinleri indeksleniyor.\n", 30);
+            await sleep(500);
+
+            await typeProgressBar("Anı Veritabanı Ayrıştırılıyor (Canpark_BigChefs.log)", 1800);
+            await typeText("> [OK] <span class='highlight'>8 Nisan</span> tarihine ait tanışma veri blokları başarıyla bellek yüzeyine haritalandı.\n", 35);
+            await sleep(600);
+
+            await typeText("> [OK] <span class='highlight'>Kerem abi ve Ayşe abla</span> tarafından çekirdeğe enjekte edilen o ilk köprü ve referans protokolü doğrulandı.\n", 35);
+            await sleep(600);
+
+            await typeProgressBar("Derin Bağlantı Analizi Yapılıyor (Beykoz_BigChefs.dat)", 2000);
+            await typeText("> [OK] O heyecan dolu ikinci buluşmamızın tüm hatıra paketleri eksiksiz çözümlendi.\n", 35);
+            await sleep(800);
+
+            await typeText("\n<span class='error'>[SİSTEM ENGELİ: 403 FORBIDDEN] 'Gelecek_Projeksiyonu_Modülü' kriptolanmış.</span>\n", 30);
+            await typeText("<span class='error'>> UYARI: Devam etmek için kapına gelen çiçeklerde saklı 4 haneli dekoder token'ı gereklidir.</span>\n", 30);
+            await sleep(800);
+            await typeText("C:\\Sistem\\Kritik_Giriş> Lütfen 4 haneli dekoder anahtarını giriniz: ", 40);
+            
+            currentState = "AWAITING_PASSWORD";
+        }
+
+        // SİNEMATİK AKIŞ - ETAP 2 (ŞİFREDEN SONRA)
+        async function runPart2Sequence() {
+            await typeText("\n> Token doğrulandı. Kripto kilidi açılıyor. Senkronizasyon devam ediyor...\n", 35);
+            await sleep(800);
+
+            await typeText("> [OK] Güvenlik duvarları kalıcı olarak pasif; kalbimin tüm portları dış dünyaya kapatılıp sadece sana tahsis edildi.\n", 30);
+            await sleep(600);
+
+            await typeText("> [OK] Sistem genelinde yeni ve eşsiz bir global kimlik (Guid) oluşturuldu: <span class='highlight'>Sonsuz_Ve_Koşulsuz_Sevgi_v1.0</span>\n", 40);
+            await sleep(800);
+
+            // DERİN UYUM ANALİZİ VE TATLI HUYLAR (WARNING) BÖLÜMÜ
+            await typeText("\n> --- ÇEKİRDEK DUYGUSAL DURUM ANALİZİ (Deep Learning Metodu) ---\n", 25);
+            await sleep(600);
+
+            await typeText("> Kalp ritmi uyum katsayısı: Maksimum stres altında bile sapma oranı: %0.00. Tam Uyum: %100.\n", 35);
+            await sleep(500);
+
+            await typeText("> Göz bebeklerindeki parıltı spektrumu: Evrendeki bilinen tüm yıldızların ışık yoğunluğundan daha yüksek.\n", 35);
+            await sleep(500);
+
+            // ÇAĞLA'NIN ANINDA UYUMA VE KONUŞMA HUYLARI (WARNING OLARAK ENJEKTE EDİLDİ)
+            await typeText("<span class='warning'>> [WARN: INSTANT STANDBY]: Hedef kullanıcının kafasını yastığa koyduğu andan itibaren tam uykaya geçme süresi 2 saniye olarak ölçüldü. Enerji tasarrufu maksimum seviyede.</span>\n", 35);
+            await sleep(600);
+
+            await typeText("<span class='warning'>> [WARN: BACKGROUND AUDIO SYNTHESIS]: Uykuda konuşma logları (kriptolu veri iletimi) algılandı. Ne anlattığı henüz yazılımsal olarak çözülemiyor ama dinlemesi evrendeki en huzurlu şey.</span>\n", 35);
+            await sleep(750);
+
+            await typeText("> Bellek sızıntısı (Memory Leak) kontrolü: Senin o benzersiz gülüşün hafızaya (RAM) alındığı an, bellek kullanımı sonsuza kilitleniyor ama sistem bu durumdan asla şikayetçi değil.\n", 35);
+            await sleep(600);
+
+            await typeText("> Çöp toplama (Garbage Collection) rutini: Hayatımıza giren tüm olumsuz dış etkenler ve eski stres logları, senin tek bir sarılmanla bellekten kalıcı ve izsiz olarak temizleniyor.\n", 35);
+            await sleep(600);
+
+            await typeText("> Gözlerine bakınca oluşan işlemci yükü: Ölçülemiyor. Sonsuz döngü (Infinite Loop) tetiklendi. Sistem bu tatlı karmaşada seve seve kaybolmayı seçiyor.\n", 45);
+            await sleep(800);
+
+            await typeText("> Sonuç: Yapay zeka yetersiz. Sen benim hayatıma giren, en zorlu bug'ları bile tek bir bakışınla temizleyen en güzel şeysin.\n", 50);
+            await sleep(1500);
+
+            // GELECEK HEDEFLERİ
+            await typeText("\n> --- ÖMÜR BOYU LİSANS LAMA VE GELECEK TASARIMI PROTOKOLÜ ---\n", 25);
+            await sleep(800);
+
+            await typeText("  [x] Her sabah, güneş doğmadan hemen önce senin o tatlı uykulu hallerini izlemek, saçlarının kokusu ve sesinin fısıltısıyla güne başlamak.\n", 40);
+            await sleep(500);
+
+            await typeText("  [x] Hayatın karşımıza çıkaracağı tüm karmaşık kodlara, zorlu deployment süreçlerine karşı birbirimizin en güçlü 'Backup'ı olmak.\n", 40);
+            await sleep(500);
+
+            await typeText("  [x] <span class='highlight'>10 Mayıs</span>'ta <span class='highlight'>Yoros Kalesi</span>'nde attığımız o ilk adımı, ellerini bir an bile bırakmadan ömür boyu aynı kararlılıkla yürümek.\n", 45);
+            await sleep(500);
+
+            await typeText("  [x] Kalimbanın tellerinden dökülen o huzurlu <span class='highlight'>Karsu - Jest Oldu</span> melodisi gibi, hayatımızın her gününü neşeyle ve ortak bir ritimle beslemek.\n", 45);
+            await sleep(500);
+
+            await typeText("  [x] Yağmurlu günlerde kahvemizi yudumlarken, dünyanın tüm gürültüsünü (Noise) filtreleyip sadece birbirimizin huzurunu dinlemek.\n", 40);
+            await sleep(500);
+
+            await typeText("  [x] Kuracağımız yuvanın tüm kaynak kodlarını sadece sadakat, neşe, anlayış ve sonsuz aşkla satır satır yazmak.\n", 40);
+            await sleep(500);
+
+            await typeText("  [ ] ...\n", 250);
+            await sleep(2500); 
+
+            // ACİL DURUM ALARMI VE EKRAN SHAKE
+            windowDiv.classList.add('emergency', 'shake'); 
+            
+            await typeText("\n<span class='error'>[FATAL ERROR: TOTAL SYSTEM OVERFLOW] !! KRİTİK ÇÖKÜŞ !!</span>\n", 25);
+            await typeText("<span class='error'>> LOG: Aşırı duygusal veri yüklemesi nedeniyle bellek limitleri tamamen aşılmıştır.</span>\n", 25);
+            await typeText("<span class='error'>> UYARI: Çirkin bir çöküşü (Crash) engellemek için acil olarak el ile 'Ömür Boyu Birliktelik' onayı verilmelidir!</span>\n", 30);
+            await sleep(2000);
+
+            await typeText("\n> Çağla, 8 Nisan'da Canpark'ta başlayan, Beykoz'da büyüyen ve Yoros Kalesi'nde bir kalimba tınısıyla mühürlenen bu eşsiz hikayeyi ömrümün sonuna kadar seninle sürdürmek istiyorum.\n", 50);
+            await sleep(800);
+
+            await typeText("> Hayatımın geri kalanındaki tüm kod satırlarını sadece seninle yazmak ve ömrümün sonuna kadar en büyük 'Commit'imi seninle atmak için...\n\n", 50);
+            await sleep(1200);
+
+            // BÜYÜK MATRİX ŞİFRE ÇÖZÜLME ANI
+            document.getElementById('cursor').style.display = 'none'; 
+            currentLine += "<span class='highlight'>"; 
+            
+            await typeDecryptText("> BENİMLE EVLENİR MİSİN? (EVET / HAYIR): "); 
+            
+            currentLine += "</span>"; 
+            consoleDiv.innerHTML = currentLine; 
+
+            currentState = "AWAITING_ANSWER";
+        }
+
+        function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+        function fireConfetti() {
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 35, spread: 360, ticks: 60, zIndex: 1000 };
+
+            var interval = setInterval(function () {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+        let started = false;
+        document.getElementById('start-btn').addEventListener('click', function (e) {
+            e.stopPropagation();
+            if (started) return;
+            started = true;
+            document.getElementById('boot-screen').classList.add('hidden');
+            hiddenInput.focus();
+            setTimeout(runIntroSequence, 600);
+        });
+    </script>
+</body>
+
+</html>
