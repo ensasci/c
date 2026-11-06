@@ -4,9 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Terminali - Ana Çekirdek</title>
-    <!-- Konfeti Kütüphanesi -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <title>Casa Lavanda | Misafir Değerlendirmesi</title>
+    <!-- Konfeti Kütüphanesi (canvas-confetti 1.6.0, gömülü) -->
+    <script>/**
+ * Minified by jsDelivr using Terser v5.37.0.
+ * Original file: /npm/canvas-confetti@1.6.0/dist/confetti.browser.js
+ *
+ * Do NOT use SRI with dynamically generated files! More information: https://www.jsdelivr.com/using-sri-with-dynamic-files
+ */
+!function(t,e){!function t(e,n,a,i){var o=!!(e.Worker&&e.Blob&&e.Promise&&e.OffscreenCanvas&&e.OffscreenCanvasRenderingContext2D&&e.HTMLCanvasElement&&e.HTMLCanvasElement.prototype.transferControlToOffscreen&&e.URL&&e.URL.createObjectURL);function r(){}function l(t){var a=n.exports.Promise,i=void 0!==a?a:e.Promise;return"function"==typeof i?new i(t):(t(r,r),null)}var c,s,u,h,f,d,m,g,b,v=(u=Math.floor(1e3/60),h={},f=0,"function"==typeof requestAnimationFrame&&"function"==typeof cancelAnimationFrame?(c=function(t){var e=Math.random();return h[e]=requestAnimationFrame((function n(a){f===a||f+u-1<a?(f=a,delete h[e],t()):h[e]=requestAnimationFrame(n)})),e},s=function(t){h[t]&&cancelAnimationFrame(h[t])}):(c=function(t){return setTimeout(t,u)},s=function(t){return clearTimeout(t)}),{frame:c,cancel:s}),M=(g={},function(){if(d)return d;if(!a&&o){var e=["var CONFETTI, SIZE = {}, module = {};","("+t.toString()+")(this, module, true, SIZE);","onmessage = function(msg) {","  if (msg.data.options) {","    CONFETTI(msg.data.options).then(function () {","      if (msg.data.callback) {","        postMessage({ callback: msg.data.callback });","      }","    });","  } else if (msg.data.reset) {","    CONFETTI && CONFETTI.reset();","  } else if (msg.data.resize) {","    SIZE.width = msg.data.resize.width;","    SIZE.height = msg.data.resize.height;","  } else if (msg.data.canvas) {","    SIZE.width = msg.data.canvas.width;","    SIZE.height = msg.data.canvas.height;","    CONFETTI = module.exports.create(msg.data.canvas);","  }","}"].join("\n");try{d=new Worker(URL.createObjectURL(new Blob([e])))}catch(t){return void 0!==typeof console&&"function"==typeof console.warn&&console.warn("🎊 Could not load worker",t),null}!function(t){function e(e,n){t.postMessage({options:e||{},callback:n})}t.init=function(e){var n=e.transferControlToOffscreen();t.postMessage({canvas:n},[n])},t.fire=function(n,a,i){if(m)return e(n,null),m;var o=Math.random().toString(36).slice(2);return m=l((function(a){function r(e){e.data.callback===o&&(delete g[o],t.removeEventListener("message",r),m=null,i(),a())}t.addEventListener("message",r),e(n,o),g[o]=r.bind(null,{data:{callback:o}})}))},t.reset=function(){for(var e in t.postMessage({reset:!0}),g)g[e](),delete g[e]}}(d)}return d}),p={particleCount:50,angle:90,spread:45,startVelocity:45,decay:.9,gravity:1,drift:0,ticks:200,x:.5,y:.5,shapes:["square","circle"],zIndex:100,colors:["#26ccff","#a25afd","#ff5e7e","#88ff5a","#fcff42","#ffa62d","#ff36ff"],disableForReducedMotion:!1,scalar:1};function y(t,e,n){return function(t,e){return e?e(t):t}(t&&null!=t[e]?t[e]:p[e],n)}function w(t){return t<0?0:Math.floor(t)}function x(t){return parseInt(t,16)}function C(t){return t.map(T)}function T(t){var e=String(t).replace(/[^0-9a-f]/gi,"");return e.length<6&&(e=e[0]+e[0]+e[1]+e[1]+e[2]+e[2]),{r:x(e.substring(0,2)),g:x(e.substring(2,4)),b:x(e.substring(4,6))}}function I(t){t.width=document.documentElement.clientWidth,t.height=document.documentElement.clientHeight}function k(t){var e=t.getBoundingClientRect();t.width=e.width,t.height=e.height}function E(t,e,n,o,r){var c,s,u=e.slice(),h=t.getContext("2d"),f=l((function(e){function l(){c=s=null,h.clearRect(0,0,o.width,o.height),r(),e()}c=v.frame((function e(){!a||o.width===i.width&&o.height===i.height||(o.width=t.width=i.width,o.height=t.height=i.height),o.width||o.height||(n(t),o.width=t.width,o.height=t.height),h.clearRect(0,0,o.width,o.height),u=u.filter((function(t){return function(t,e){e.x+=Math.cos(e.angle2D)*e.velocity+e.drift,e.y+=Math.sin(e.angle2D)*e.velocity+e.gravity,e.wobble+=e.wobbleSpeed,e.velocity*=e.decay,e.tiltAngle+=.1,e.tiltSin=Math.sin(e.tiltAngle),e.tiltCos=Math.cos(e.tiltAngle),e.random=Math.random()+2,e.wobbleX=e.x+10*e.scalar*Math.cos(e.wobble),e.wobbleY=e.y+10*e.scalar*Math.sin(e.wobble);var n=e.tick++/e.totalTicks,a=e.x+e.random*e.tiltCos,i=e.y+e.random*e.tiltSin,o=e.wobbleX+e.random*e.tiltCos,r=e.wobbleY+e.random*e.tiltSin;if(t.fillStyle="rgba("+e.color.r+", "+e.color.g+", "+e.color.b+", "+(1-n)+")",t.beginPath(),"circle"===e.shape)t.ellipse?t.ellipse(e.x,e.y,Math.abs(o-a)*e.ovalScalar,Math.abs(r-i)*e.ovalScalar,Math.PI/10*e.wobble,0,2*Math.PI):function(t,e,n,a,i,o,r,l,c){t.save(),t.translate(e,n),t.rotate(o),t.scale(a,i),t.arc(0,0,1,r,l,c),t.restore()}(t,e.x,e.y,Math.abs(o-a)*e.ovalScalar,Math.abs(r-i)*e.ovalScalar,Math.PI/10*e.wobble,0,2*Math.PI);else if("star"===e.shape)for(var l=Math.PI/2*3,c=4*e.scalar,s=8*e.scalar,u=e.x,h=e.y,f=5,d=Math.PI/f;f--;)u=e.x+Math.cos(l)*s,h=e.y+Math.sin(l)*s,t.lineTo(u,h),l+=d,u=e.x+Math.cos(l)*c,h=e.y+Math.sin(l)*c,t.lineTo(u,h),l+=d;else t.moveTo(Math.floor(e.x),Math.floor(e.y)),t.lineTo(Math.floor(e.wobbleX),Math.floor(i)),t.lineTo(Math.floor(o),Math.floor(r)),t.lineTo(Math.floor(a),Math.floor(e.wobbleY));return t.closePath(),t.fill(),e.tick<e.totalTicks}(h,t)})),u.length?c=v.frame(e):l()})),s=l}));return{addFettis:function(t){return u=u.concat(t),f},canvas:t,promise:f,reset:function(){c&&v.cancel(c),s&&s()}}}function S(t,n){var a,i=!t,r=!!y(n||{},"resize"),c=y(n,"disableForReducedMotion",Boolean),s=o&&!!y(n||{},"useWorker")?M():null,u=i?I:k,h=!(!t||!s)&&!!t.__confetti_initialized,f="function"==typeof matchMedia&&matchMedia("(prefers-reduced-motion)").matches;function d(e,n,i){for(var o,r,l,c,s,h=y(e,"particleCount",w),f=y(e,"angle",Number),d=y(e,"spread",Number),m=y(e,"startVelocity",Number),g=y(e,"decay",Number),b=y(e,"gravity",Number),v=y(e,"drift",Number),M=y(e,"colors",C),p=y(e,"ticks",Number),x=y(e,"shapes"),T=y(e,"scalar"),I=function(t){var e=y(t,"origin",Object);return e.x=y(e,"x",Number),e.y=y(e,"y",Number),e}(e),k=h,S=[],F=t.width*I.x,N=t.height*I.y;k--;)S.push((o={x:F,y:N,angle:f,spread:d,startVelocity:m,color:M[k%M.length],shape:x[(c=0,s=x.length,Math.floor(Math.random()*(s-c))+c)],ticks:p,decay:g,gravity:b,drift:v,scalar:T},r=void 0,l=void 0,r=o.angle*(Math.PI/180),l=o.spread*(Math.PI/180),{x:o.x,y:o.y,wobble:10*Math.random(),wobbleSpeed:Math.min(.11,.1*Math.random()+.05),velocity:.5*o.startVelocity+Math.random()*o.startVelocity,angle2D:-r+(.5*l-Math.random()*l),tiltAngle:(.5*Math.random()+.25)*Math.PI,color:o.color,shape:o.shape,tick:0,totalTicks:o.ticks,decay:o.decay,drift:o.drift,random:Math.random()+2,tiltSin:0,tiltCos:0,wobbleX:0,wobbleY:0,gravity:3*o.gravity,ovalScalar:.6,scalar:o.scalar}));return a?a.addFettis(S):(a=E(t,S,u,n,i)).promise}function m(n){var o=c||y(n,"disableForReducedMotion",Boolean),m=y(n,"zIndex",Number);if(o&&f)return l((function(t){t()}));i&&a?t=a.canvas:i&&!t&&(t=function(t){var e=document.createElement("canvas");return e.style.position="fixed",e.style.top="0px",e.style.left="0px",e.style.pointerEvents="none",e.style.zIndex=t,e}(m),document.body.appendChild(t)),r&&!h&&u(t);var g={width:t.width,height:t.height};function b(){if(s){var e={getBoundingClientRect:function(){if(!i)return t.getBoundingClientRect()}};return u(e),void s.postMessage({resize:{width:e.width,height:e.height}})}g.width=g.height=null}function v(){a=null,r&&e.removeEventListener("resize",b),i&&t&&(document.body.removeChild(t),t=null,h=!1)}return s&&!h&&s.init(t),h=!0,s&&(t.__confetti_initialized=!0),r&&e.addEventListener("resize",b,!1),s?s.fire(n,g,v):d(n,g,v)}return m.reset=function(){s&&s.reset(),a&&a.reset()},m}function F(){return b||(b=S(null,{useWorker:!0,resize:!0})),b}n.exports=function(){return F().apply(this,arguments)},n.exports.reset=function(){F().reset()},n.exports.create=S}(function(){return void 0!==t?t:"undefined"!=typeof self?self:this||{}}(),e,!1),t.confetti=e.exports}(window,{});
+//# sourceMappingURL=/sm/6de00f2697a1683b235e589897df757a94e6809643432a9e3ad259420752442d.map</script>
     <style>
         /* SİNEMATİK RETRO TERMINAL STİLİ */
         html {
@@ -125,51 +132,208 @@
             text-shadow: 0 0 3px rgba(255, 204, 0, 0.4);
         }
 
-        /* AÇILIŞ EKRANI */
-        #boot-screen {
-            position: fixed;
+        /* ANKET EKRANI */
+        #survey-screen {
+            --lavanda: #7b77bb;
+            --lavanda-koyu: #5a568f;
+            --krem: #f5efdf;
+            --metin: #34324a;
+            position: absolute;
             inset: 0;
-            background: #050505;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 22px;
-            z-index: 50;
-            transition: opacity 0.8s ease;
-            text-align: center;
-            padding: 20px;
+            z-index: 100;
+            background: #fbf9f4;
+            color: var(--metin);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            transition: opacity 0.6s ease;
         }
-        #boot-screen.hidden {
+        #survey-screen.hidden {
             opacity: 0;
             pointer-events: none;
         }
-        #boot-screen .boot-title {
-            font-size: 13px;
-            letter-spacing: 3px;
-            opacity: 0.75;
+        .sv-head {
+            background: var(--lavanda);
+            padding: 22px 20px;
+            text-align: center;
         }
-        #start-btn {
-            background: transparent;
-            color: #00ff66;
-            border: 2px solid #00ff66;
-            border-radius: 6px;
-            padding: 14px 34px;
-            font-family: inherit;
+        .sv-head img {
+            height: 76px;
+            width: auto;
+            display: inline-block;
+        }
+        .sv-body {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 26px 22px 32px;
+            box-sizing: border-box;
+        }
+        .sv-body h1 {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 0 0 8px;
+        }
+        .sv-intro {
+            font-size: 15px;
+            line-height: 1.5;
+            margin: 0 0 26px;
+            opacity: 0.8;
+        }
+        .sv-group {
+            border: 0;
+            margin: 0 0 26px;
+            padding: 0;
+            min-width: 0;
+        }
+        .sv-group legend {
             font-size: 16px;
-            letter-spacing: 2px;
+            font-weight: 600;
+            padding: 0;
+            margin-bottom: 12px;
+        }
+        .sv-stars {
+            display: flex;
+            gap: 6px;
+        }
+        .sv-stars button {
+            flex: 1;
+            max-width: 56px;
+            aspect-ratio: 1;
+            background: none;
+            border: 0;
+            padding: 0;
+            font-size: 38px;
+            line-height: 1;
+            color: #d8d4e6;
             cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 255, 102, 0.25);
-            animation: pulse 1.8s ease-in-out infinite;
-            transition: background 0.2s, color 0.2s;
+            transition: color 0.12s, transform 0.12s;
+            -webkit-tap-highlight-color: transparent;
         }
-        #start-btn:hover, #start-btn:active {
-            background: #00ff66;
-            color: #000;
+        .sv-stars button.on {
+            color: var(--lavanda);
         }
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 12px rgba(0, 255, 102, 0.2); }
-            50% { box-shadow: 0 0 32px rgba(0, 255, 102, 0.55); }
+        .sv-stars button:active {
+            transform: scale(0.9);
+        }
+        .sv-chips {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .sv-chips button {
+            background: #fff;
+            border: 1.5px solid #dcd8e8;
+            border-radius: 8px;
+            padding: 13px 10px;
+            font: inherit;
+            font-size: 15px;
+            color: inherit;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .sv-chips button.on {
+            background: var(--lavanda);
+            border-color: var(--lavanda);
+            color: #fff;
+        }
+        #sv-note {
+            min-height: 22px;
+            margin: -8px 0 10px;
+            font-size: 14px;
+            color: #b3372f;
+        }
+        #sv-submit {
+            width: 100%;
+            background: var(--lavanda-koyu);
+            color: #fff;
+            border: 0;
+            border-radius: 8px;
+            padding: 15px;
+            font: inherit;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        #sv-submit:disabled {
+            opacity: 0.7;
+            cursor: default;
+        }
+        .sv-foot {
+            margin: 18px 0 0;
+            font-size: 12px;
+            text-align: center;
+            opacity: 0.55;
+        }
+
+        /* ANKETİN BOZULMASI */
+        #survey-screen.sv-glitch {
+            animation: svGlitch 0.28s steps(2) infinite;
+        }
+        @keyframes svGlitch {
+            0% { transform: translate(0, 0); filter: none; }
+            25% { transform: translate(-5px, 2px) skewX(2deg); filter: hue-rotate(90deg) contrast(1.4); }
+            50% { transform: translate(4px, -3px); filter: invert(1); }
+            75% { transform: translate(-2px, 4px) skewX(-3deg); filter: hue-rotate(200deg) saturate(2); }
+            100% { transform: translate(3px, 0); filter: contrast(1.8); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #survey-screen.sv-glitch { animation: none; filter: invert(1); }
+        }
+
+        /* YETKİSİZ ERİŞİM EKRANI */
+        #breach-screen {
+            position: absolute;
+            inset: 0;
+            z-index: 101;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            padding: 24px;
+            box-sizing: border-box;
+            background: #000;
+            color: #ff3333;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 1.5;
+            text-shadow: 0 0 10px rgba(255, 51, 51, 0.7);
+            transition: opacity 0.6s ease;
+        }
+        #breach-screen.active {
+            display: flex;
+        }
+        #breach-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #breach-screen .breach-sub {
+            color: #00ff66;
+            font-size: 14px;
+            font-weight: normal;
+            text-shadow: none;
+        }
+
+        /* TELEFONDA KLAVYE İPUCU */
+        #tap-hint {
+            display: none;
+            position: absolute;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 98;
+            padding: 6px 12px;
+            background: #000;
+            border: 1px solid #00ff66;
+            border-radius: 6px;
+            font-size: 13px;
+            white-space: nowrap;
+            animation: blink 1.6s step-end infinite;
+            pointer-events: none;
+        }
+        @media (pointer: coarse) {
+            body.show-tap-hint #tap-hint { display: block; }
         }
 
         .shake {
@@ -201,17 +365,53 @@
 
 <body>
 
-    <div id="boot-screen">
-        <div class="boot-title">Enes-OS // ÇEKİRDEK HAZIR</div>
-        <button id="start-btn">&gt; SİSTEMİ BAŞLAT_</button>
+    <div id="survey-screen">
+        <header class="sv-head">
+            <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0ia2F0bWFuXzIiIGRhdGEtbmFtZT0ia2F0bWFuIDIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDEwMDUuMzEgNjQ4LjMyIj4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLmNscy0xIHsKICAgICAgICBmaWxsOiAjZjVlZmRmOwogICAgICB9CiAgICA8L3N0eWxlPgogIDwvZGVmcz4KICA8ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIj4KICAgIDxnPgogICAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik05ODAuNzQsNDk0LjI3aDI0LjU4bC03MC4zNS0xODAuNDFoLTIwLjM5bC44Mi45OGM0LjgxLDUuNzcsOC42LDEwLjMxLDEwLjkxLDE1LjI3bC02NS42MSwxNjQuMTVoMjEuOTJsLS4yMy0uNzZjLTMuMDItMTAuNi0xLjExLTI0Ljk3LDUuODgtNDMuOTJsMTMuNzEtMzcuNTRjMjAuNjUtMi42MSwzOC40Ny00LjQ0LDU0LjQ1LTUuNTVsMjMuNjUsNjAuNzhjNCw5LjY0LDQuMzUsMTguNDQsMS4wNCwyNi4xNmwtLjM3Ljg0Wk05MDUuOTYsNDAxLjQybDIzLjQ4LTY0LjUsMjQuOTYsNjQuNWgtNDguNDRaIi8+CiAgICAgIDxnPgogICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTIyLjY0LDQ4OC42NnYtMTUwLjM5YzAtOS45OCwwLTEzLjM1LDguNTYtMjMuNDJsLjg1LS45OUgwbC44NS45OWM4LjU2LDEwLjA3LDguNTYsMTMuNDQsOC41NiwyMy40MnYxMzEuNTljMCw5Ljk4LDAsMTMuMzQtOC41NiwyMy40MmwtLjg1Ljk5aDkyLjQzbDcuNjEtMTYuMzMtMS4yMi4yOWMtMjAuODUsNS4wMy00Ni42Niw3Ljg4LTc2LjE4LDEwLjQzIi8+CiAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMTcxLjY2LDMxMy44NmwuODIuOThjNC44MSw1Ljc3LDguNiwxMC4zMSwxMC45MSwxNS4yN2wtNjUuNjEsMTY0LjE1aDIxLjkybC0uMjMtLjc2Yy0zLjAyLTEwLjYtMS4xMS0yNC45Nyw1Ljg4LTQzLjkybDEzLjcxLTM3LjU0YzIwLjY1LTIuNjEsMzguNDctNC40NCw1NC40NS01LjU1bDIzLjY1LDYwLjc4YzQsOS42NCw0LjM1LDE4LjQ0LDEuMDQsMjYuMTZsLS4zNy44NGgyNC41OGwtNzAuMzUtMTgwLjQxaC0yMC4zOFpNMTYzLjA1LDQwMS40MmwyMy40OC02NC41LDI0Ljk2LDY0LjVoLTQ4LjQ0WiIvPgogICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTM3MC40LDMxMy44NmwuMTkuNzZjMi45OCwxMS42NCwxLjM1LDI3LjMyLTQuNTksNDQuMmwtMzguODcsMTE0LjMzLTQ1Ljc2LTEyOC40M2MtNS45My0xNi4xNS01LjA3LTIzLjIyLTEuNTctMjkuOTdsLjQ3LS44OGgtMjQuNjRsNjYuNDgsMTgyLjk2aDIuMzhsNjcuMjctMTgyLjk2aC0yMS4zNVoiLz4KICAgICAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik00MzkuODUsMzEzLjg2bC44Mi45OGM0LjgxLDUuNzcsOC42LDEwLjMxLDEwLjkxLDE1LjI3bC02NS42MSwxNjQuMTVoMjEuOTJsLS4yMy0uNzZjLTMuMDItMTAuNi0xLjExLTI0Ljk3LDUuODgtNDMuOTJsMTMuNzEtMzcuNTRjMjAuNjUtMi42MSwzOC40Ny00LjQ0LDU0LjQ1LTUuNTVsMjMuNjUsNjAuNzhjNCw5LjY0LDQuMzUsMTguNDQsMS4wNCwyNi4xNmwtLjM3Ljg0aDI0LjU4bC03MC4zNS0xODAuNDFoLTIwLjM4Wk00MzEuMjQsNDAxLjQybDIzLjQ4LTY0LjUsMjQuOTYsNjQuNWgtNDguNDRaIi8+CiAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNjYyLjUxLDMxNC43N2M2LjU4LDExLjQsOC4xMiwxNi43OSw4LjYyLDMwLjQ0bDQuMjgsMTIzLjU3LTk0LjI2LTEzNC42OGMtNS4yNy03Ljc4LTcuMzMtMTMuMTEtNy41OC0xOS42NmwtLjAzLS41OGgtMjMuOTlsMTUuMTQsMjEuODR2MTI3Ljc1YzAsMTMuMTItMS43MiwyMC4xMS03LjM1LDI5LjkxbC0uNTEuOWgyNi42N2wtLjUzLS45MWMtNi44OC0xMS43MS04LjM4LTE2Ljc5LTguODgtMzAuMThsLTQuMjgtMTIxLjAyLDEwOCwxNTQuMTZoMi45NnYtMTUxLjY0YzAtMTIuMjEsMS42LTE4LjkyLDcuMTEtMjkuOTRsLjQ0LS44N2gtMjYuMzRsLjUyLjlaIi8+CiAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNzQyLjcyLDMxMy44NmgtMjUuMTFsLjg1LDFjOC41NiwxMC4wNyw4LjU2LDEzLjQzLDguNTYsMjMuNDF2MTMxLjU5YzAsOS45OSwwLDEzLjM1LTguNTYsMjMuNDNsLS44NS45OWgyMy41OGM1NC4xNywwLDExMi40Ny0yOS4wMywxMTIuNDctOTIuNzcsMC01NC44Ny00MS40Ny04Ny42NC0xMTAuOTQtODcuNjRNNzQwLjI2LDMxOS40M2M2My4zNSwxLjgsOTkuNjcsMzEuOTgsOTkuNjcsODIuODVzLTM3LjI0LDgzLjg3LTk5LjY3LDg2LjQxdi0xNjkuMjVaIi8+CiAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzQyLjgsMjc5LjM0YzEzLjg1LDAsMjcuMDUtMi41OSwzOS4yMy03LjY5bC42MS0uMjUsNC45NS0xOS4yMi0yLjE1LS45NGMtMTQuMTMsMTUtMjcuMTUsMjEuNjktNDIuMjMsMjEuNjktMzEuMjMsMC02NC40LTI1LjA4LTY0LjQtNzEuNTYsMC00My4zNSwyOS40MS02Ni4wNCw1OC40NS02Ni4wNCwxNS4wNiwwLDI3LjY2LDUuMzQsNDAuODgsMTcuMjdsMy4xNCwyLjg1LTQuNzEtMjAuNjktLjUzLS4yYy05LjcxLTMuNjUtMjIuMjEtNS44My0zMy40NS01LjgzLTQzLjYzLDAtNzYuNTMsMzIuMzctNzYuNTMsNzUuMywwLDQ4LjkxLDM5LjU0LDc1LjI5LDc2LjczLDc1LjI5Ii8+CiAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDE3LjA5LDI3Ni43OGgzLjkxbC0uMDItLjA4aC4zMXMtLjM4LTEuMzUtLjM4LTEuMzVjLTIuMzQtOC4xOC0uNzctMTkuODIsNC42OC0zNC41OWwxMC41OS0yOS41MmMxNi4yNS0yLjA0LDMwLjIzLTMuNDcsNDIuNDUtNC41NWwxOC43OCw0OC4yNWMzLjExLDcuNDksMy4zOCwxNC4yOS44MiwyMC4yNWwtLjI1LDEuMzctLjEuMjJoLjA1bC0uMDUuM2gyMS44MmwtNTcuMTktMTQ2LjA4aC0xOC41NmwxLjg1LDIuMjFjMy42OSw0LjQ0LDYuNjEsNy45Myw4LjQxLDExLjc0bC0zOC4yNCw5Ni41LTE0LjEyLDM1LjMyaC4xM2wtLjEzLjMsMTUuMjMtLjNaTTQ3Ni43MywyMDEuMDVsLTI3LjI3LjNoLTkuNGwxNy42OS00OC41NiwxMy45NCwzNS4yMSw1LjA1LDEzLjA1WiIvPgogICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTYwNy4xMywyMzkuNjhjMC0xNy4yNC05LjI0LTI3LjQtMzAuMzMtNDYuNDZsLTEuODctMS43NGMtMTMuODQtMTIuOS0yMS40Ny0xOS45OS0yMS40Ny0zMy45NCwwLTEyLjU0LDkuMjktMjIsMjEuNTktMjIsOC4yMywwLDE1LjE4LDIuNDEsMjYuNDQsMTQuNzFsMi44NiwzLjEyLTIuMjEtMTguMjItLjQ1LS40Mi0uMTMtLjA3Yy0zLjY0LTIuMjEtMTEuNDMtNS45My0yMi42Mi01LjkzLTIzLjM2LDAtMzUuOTcsMTYuOTUtMzUuOTcsMzIuODksMCwxNy4xNyw3Ljc2LDI0Ljg4LDI2Ljg2LDQyLjE2LDIwLjEzLDE4LjQ5LDI2LjQsMjYuMzgsMjYuNCwzOS43NywwLDE0LjMxLTguNDQsMjguNzYtMjcuMzIsMjguNzYtNy43NCwwLTE2Ljk3LTItMzIuMDQtMTYuNDNsLTIuOC0yLjY4LDIuODQsMTkuODMuNTUuMjNjOC44MywzLjg0LDE5LjMyLDYuMDUsMjguNzksNi4wNSwyMy4zMSwwLDQwLjg5LTE3LjA0LDQwLjg5LTM5LjY1Ii8+CiAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNzE3Ljc5LDI3NS4xOWwtLjI0LDEuMzYtLjEuMjNoLjA1bC0uMDUuM2gyMS44MWwtNTcuMTktMTQ2LjA5aC0xOC41NmwxLjg1LDIuMjJjMy42OSw0LjQ0LDYuNjEsNy45Myw4LjQyLDExLjc0bC0zOC4yNSw5Ni41LTE0LjEyLDM1LjMzaC4xM2wtLjEzLjMsMTUuMjMtLjNoMy45MWwtLjAzLS4wOGguMzFzLS4zOS0xLjM1LS4zOS0xLjM1Yy0yLjM0LTguMTgtLjc2LTE5LjgzLDQuNjgtMzQuNTlsMTAuNTktMjkuNTNjMTYuMjUtMi4wNCwzMC4yMy0zLjQ3LDQyLjQ2LTQuNTVsMTguNzcsNDguMjZjMy4xLDcuNDgsMy4zOCwxNC4yOS44MiwyMC4yNU02NTkuNjIsMjAxLjM1bDE3LjY4LTQ4LjU2LDEzLjk0LDM1LjIyLDUuMDYsMTMuMDUtMjcuMjcuM2gtOS40WiIvPgogICAgICAgIDxwb2x5Z29uIGNsYXNzPSJjbHMtMSIgcG9pbnRzPSIzNzYuOTcgNTQuMSAzNzUuNDcgNTAuMzUgMzUyLjA3IDU5LjcxIDM0Ny43MiA0OC44NCAzNTkuNTMgNDQuMTEgMzU4LjAzIDQwLjM3IDM0Ni4yMiA0NS4wOCAzNDIuMzMgMzUuMzYgMzY0Ljc5IDI2LjM4IDM2My4zIDIyLjY0IDMzNy4wNCAzMy4xMyAzNDkuNzcgNjQuOTcgMzc2Ljk3IDU0LjEiLz4KICAgICAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0zODMuNiwzMy4yOGMyLjM1LjczLDQuNTIuNjQsOC42OC0uNDhsNy4wMi0xLjg3YzMuMzctLjg5LDcuOTMtLjQ1LDkuMDQsMy41MywxLjUzLDUuNDQtNS44Myw4Ljc4LTkuOSw5LjkzLTYuMTUsMS43Mi0xMC4wNSwxLjA0LTE1LjU5LTIuMDNsLTIuMDMsMy41M2M2LjM4LDMuNywxMS42NCw0LjQyLDE4Ljc2LDIuNDMsNi40Ni0xLjgxLDE0Ljk4LTYuODEsMTIuNzQtMTQuODItMS4wMy0zLjY2LTQuMzEtNi41Mi04LjExLTYuOTgtMi4zNy0uMjktNC43Ny4xNC03LjA3Ljc5bC00LjkxLDEuMzNjLTQuMjIsMS4xMi01LjMsMS4yLTcuMDMuODItMS4zOC0uMzMtMi41MS0xLjQ5LTIuODktMi44Ni0xLjI5LTQuNiw0Ljk0LTcuODcsOC40OC04Ljg2LDQuNy0xLjMxLDguMjQtLjkyLDEyLjc5LjcybDEuNTgtMy43NGMtNS4yMS0yLjA4LTkuOTQtMi40Ny0xNS4zNS0uOTUtNiwxLjY4LTEzLjQ5LDYuNjQtMTEuNDUsMTMuOTQuNzIsMi41NiwyLjY3LDQuNzgsNS4yNCw1LjU5Ii8+CiAgICAgICAgPHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjQyOC41NSA5Ljc0IDQzMy43NiAzOS41MyA0MzcuNzQgMzguODQgNDMyLjUzIDkuMDUgNDQ0LjkxIDYuODggNDQ0LjIyIDIuOTEgNDE1LjUyIDcuOTMgNDE2LjIxIDExLjkgNDI4LjU1IDkuNzQiLz4KICAgICAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik00NzcuODksMzQuMTljOC45My0uNjEsMTQuNzktOS41NywxNC4yLTE4LjA0LS4zNS00Ljk5LTQuNTMtMTYuOTctMTcuMDItMTYuMTFsLTE2LjgzLDEuMTcsMi4zNiwzNC4xNywxNy4yOS0xLjJaTTQ3NS4zNSw0LjA4YzYuODEtLjQ4LDEyLjIsNC45NSwxMi43LDEyLjIyLjQzLDYuMjItMy43MiwxMy40LTEwLjQ0LDEzLjg3bC0xMy4yNy45Mi0xLjgtMjYuMTMsMTIuODEtLjg4WiIvPgogICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTU1MC4wNCwzMi4zMmwtMjMuMTMtMi4xMWMxLjIyLTQuODcsMy41OS04LjU3LDkuMDQtOC42MiwyLjEyLS4wNSw0LjI1LS4wNCw2LjM2LS4wNyw0LjQ4LS4wNSw4LjgzLTIuMTQsOS4yNy03LjAzLjYyLTYuNzItNi40NS05LjU0LTExLjk5LTEwLjA0LTUuOTgtLjU1LTguNjMuMDgtMTQuMSwyLjQ4bDEuNTQsMy43OWM0LjQyLTEuODUsNy4yNC0yLjYyLDEyLjEtMi4xNywzLjAyLjI4LDguOCwxLjU1LDguNDIsNS42Ni0uMjIsMi40Mi0zLjA5LDMuMDktNS4wOCwzLjEzLTIuMDguMDQtNC4xNi4wNC02LjI0LjA4LTguNjMuMTMtMTMuMTIsNi45LTEzLjg2LDE0Ljg2LS4wNC41LS4wNSwxLjA2LS4wOSwxLjU2bDI3LjM5LDIuNTEuMzctNC4wMloiLz4KICAgICAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik01NzcuMTIsNDEuODhjOS4zMSwxLjg5LDE4LjMyLTEuOTMsMjAuMzQtMTEuODIsMi4wMy05Ljk0LTQuOTQtMTcuMDctMTQuMjUtMTguOTctOS4zNS0xLjktMTguMjQsMi4xOC0yMC4yLDExLjg1LTIuMDIsOS44OCw0Ljg1LDE3LjA1LDE0LjExLDE4Ljk0TTU2NywyMy43NWMxLjUtNy4zNyw4LjI5LTEwLjExLDE1LjE2LTguNyw3LjA2LDEuNDQsMTIuODgsNi40MiwxMS4yOSwxNC4xOS0xLjU1LDcuNi04LjUxLDEwLjA1LTE1LjQ4LDguNjQtNy4wNi0xLjQ0LTEyLjU0LTYuNDktMTAuOTgtMTQuMTMiLz4KICAgICAgICA8cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iNjIyLjQzIDIxLjc3IDYxOC41NiAyMC41OSA2MDkuNzYgNDkuMzYgNjEzLjYzIDUwLjU0IDYyMi40MyAyMS43NyIvPgogICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTY0NC43OSw2Mi41OWM4Ljc4LDMuNjMsMTguMzgsMS41NywyMi4yNC03Ljc2LDMuODctOS4zOS0xLjYzLTE3LjcyLTEwLjQyLTIxLjM2LTguODMtMy42NC0xOC4zNC0xLjMxLTIyLjExLDcuODItMy44NSw5LjMzLDEuNTUsMTcuNjgsMTAuMywyMS4yOU02MzguMjcsNDIuODZjMi44OC02Ljk3LDEwLjA2LTguMzYsMTYuNTYtNS42OCw2LjY3LDIuNzQsMTEuNDUsOC43NCw4LjQxLDE2LjA5LTIuOTYsNy4xNy0xMC4yOCw4LjI4LTE2Ljg2LDUuNTYtNi42Ny0yLjc1LTExLjExLTguNzYtOC4xMi0xNS45OCIvPgogICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTI1Mi4zLDU1Ny40N2gxNi40NGM3LjI3LDAsMTEuMjQsMy4zLDExLjI0LDkuMDcsMCwzLjY0LTIuNjksNi4wNS01LjM5LDYuODUsMy4zMS44NSw2LjEsMy42OCw2LjEsNy45OSwwLDUuOS0zLjkyLDkuNjMtMTEuNjIsOS42M2gtMTYuNzd2LTMzLjU0Wk0yNTYuODMsNTYxLjY3djkuOTJoMTEuODFjNC4zOSwwLDYuNjEtMS43NSw2LjYxLTQuOTdzLTIuMTgtNC45Ni02LjYxLTQuOTZoLTExLjgxWk0yNTYuODMsNTc1Ljh2MTEuMDFoMTIuMTRjNC44NiwwLDcuMDktMi4wOCw3LjA5LTUuNTNzLTIuMjctNS40OC03LjA5LTUuNDhoLTEyLjE0WiIvPgogICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTI4OS41Myw1NzQuMjRjMC05Ljc4LDcuNDEtMTcuMzQsMTcuMzQtMTcuMzRzMTcuMzQsNy41NiwxNy4zNCwxNy4zNC03LjQ2LDE3LjMzLTE3LjM0LDE3LjMzLTE3LjM0LTcuNDYtMTcuMzQtMTcuMzNaTTMxOS40OCw1NzQuMjRjMC03LjE0LTUuMDUtMTMuMDktMTIuNjEtMTMuMDlzLTEyLjYxLDUuOTEtMTIuNjEsMTMuMDksNS4wNSwxMy4wOSwxMi42MSwxMy4wOSwxMi42MS01Ljg2LDEyLjYxLTEzLjA5WiIvPgogICAgICAgIDxnPgogICAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzU5LjY5LDU1Ny40N2g0LjU0djE5LjM3YzAsOC4xMi01LjE1LDE0LjczLTE0Ljc4LDE0Ljczcy0xNC44NC02LjUxLTE0Ljg0LTE0Ljczdi0xOS4zN2g0LjU4djE4Ljk4YzAsNi4zOCwzLjY0LDEwLjczLDEwLjI1LDEwLjczczEwLjI1LTQuMzUsMTAuMjUtMTAuNzN2LTE4Ljk4WiIvPgogICAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzg3LjI0LDU2MS43MmgtMTMuOTR2LTQuMjVoMzIuNDV2NC4yNWgtMTMuOTR2MjkuMjloLTQuNTh2LTI5LjI5WiIvPgogICAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDE0Ljk4LDU1Ny40N2g0LjU4djMzLjU0aC00LjU4di0zMy41NFoiLz4KICAgICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTQzMC4yLDU3NC4yNGMwLTkuNzgsNy40Mi0xNy4zNCwxNy4zNC0xNy4zNHMxNy4zNCw3LjU2LDE3LjM0LDE3LjM0YzAsNy4zNy00LjI1LDEzLjQ2LTEwLjUzLDE2LjA2bDguNjksNy44OWgtNi4yNGwtNy41Ni02LjcxYy0uNTcuMDQtMS4xMy4wOS0xLjcuMDktOS45MiwwLTE3LjM0LTcuNTYtMTcuMzQtMTcuMzNaTTQ2MC4xNSw1NzQuMjRjMC03LjE0LTUuMDUtMTMuMDktMTIuNjEtMTMuMDlzLTEyLjYxLDUuOTEtMTIuNjEsMTMuMDksNS4wNSwxMy4wOSwxMi42MSwxMy4wOSwxMi42MS01Ljg2LDEyLjYxLTEzLjA5WiIvPgogICAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTAwLjM1LDU1Ny40N2g0LjU0djE5LjM3YzAsOC4xMi01LjE1LDE0LjczLTE0Ljc4LDE0Ljczcy0xNC44NC02LjUxLTE0Ljg0LTE0Ljczdi0xOS4zN2g0LjU4djE4Ljk4YzAsNi4zOCwzLjY0LDEwLjczLDEwLjI1LDEwLjczczEwLjI1LTQuMzUsMTAuMjUtMTAuNzN2LTE4Ljk4WiIvPgogICAgICAgIDwvZz4KICAgICAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik01MTcuMzgsNTU3LjQ3aDI2LjI2djQuMjVoLTIxLjczdjkuMzVoMTIuOTl2NC4yNWgtMTIuOTl2MTEuNDNoMjMuNjJ2NC4yNWgtMjguMTV2LTMzLjU0WiIvPgogICAgICAgIDxnPgogICAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTY4LjY0LDU1Ny40N2g0LjU4djE0LjVoMjAuNnYtMTQuNWg0LjU4djMzLjU0aC00LjU4di0xNC43OGgtMjAuNnYxNC43OGgtNC41OHYtMzMuNTRaIi8+CiAgICAgICAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik02MDguOTksNTc0LjI0YzAtOS43OCw3LjQyLTE3LjM0LDE3LjM0LTE3LjM0czE3LjM0LDcuNTYsMTcuMzQsMTcuMzQtNy40NiwxNy4zMy0xNy4zNCwxNy4zMy0xNy4zNC03LjQ2LTE3LjM0LTE3LjMzWk02MzguOTQsNTc0LjI0YzAtNy4xNC01LjA1LTEzLjA5LTEyLjYxLTEzLjA5cy0xMi42MSw1LjkxLTEyLjYxLDEzLjA5LDUuMDUsMTMuMDksMTIuNjEsMTMuMDksMTIuNjEtNS44NiwxMi42MS0xMy4wOVoiLz4KICAgICAgICA8L2c+CiAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNjY0Ljg4LDU2MS43MmgtMTMuOTR2LTQuMjVoMzIuNDV2NC4yNWgtMTMuOTR2MjkuMjloLTQuNTh2LTI5LjI5WiIvPgogICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTY5Mi41OCw1NTcuNDdoMjYuMjZ2NC4yNWgtMjEuNzN2OS4zNWgxMi45OXY0LjI1aC0xMi45OXYxMS40M2gyMy42MnY0LjI1aC0yOC4xNXYtMzMuNTRaIi8+CiAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNzMwLjA5LDU1Ny40N2g0LjU4djI5LjI0aDIxLjY5djQuM2gtMjYuMjd2LTMzLjU0WiIvPgogICAgICAgIDxnPgogICAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzEwLjY2LDYxNC4xN2gxNy44MWM3LjIzLDAsMTEuMDYsMy4yNiwxMS4wNiw5LjQ5LDAsNC40NC0yLjQxLDcuNTEtNi44NSw4LjY1bDguMTMsMTUuNGgtNC44NmwtOC4wMy0xNC45M2gtMTIuNjZ2MTQuOTNoLTQuNTh2LTMzLjU0Wk0zMTUuMjQsNjE4LjQxdjEwLjE2aDEzLjA5YzQuMywwLDYuNDctMS41MSw2LjQ3LTQuOTEsMC0zLjY0LTIuMTgtNS4yNS02LjQ3LTUuMjVoLTEzLjA5WiIvPgogICAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzUwLjYzLDYxNC4xN2gyNi4yNnY0LjI1aC0yMS43M3Y5LjM2aDEyLjk5djQuMjVoLTEyLjk5djExLjQzaDIzLjYydjQuMjVoLTI4LjE1di0zMy41NFoiLz4KICAgICAgICA8L2c+CiAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzkxLjE3LDYyMi43NmMwLDIuNzQsMi4zMiw0LjMsNi40Miw0LjgyLDIuMzIuMjksNC4wNi40Nyw2LjU3Ljc2LDUuNjcuNjYsMTEuMDEsMi45OCwxMS4wMSw5Ljk3LDAsNS40NC00LjQ0LDEwLjAyLTEzLjY1LDEwLjAyLTEwLjM5LDAtMTQuNi01LjI5LTE2LjExLTEwLjJoNC45MWMxLjA5LDIuNTUsNC4wNiw1Ljk5LDExLjIsNS45OSw1LjgxLDAsOS4wNy0yLjM2LDkuMDctNS41NywwLTMuOTItMi43OS01LjE5LTYuOC01LjY3LTIuNS0uMjgtNC4xMS0uNDItNi42MS0uNy02LS42Ny0xMC41OC0zLjU0LTEwLjU4LTkuNCwwLTUuNDgsNS4wMS05LjE3LDEyLjcxLTkuMTcsMTAuMDEsMCwxMy45OCw0LjkxLDE1LjA3LDkuMTJoLTQuNzdjLTEuMTMtMi4yMi0zLjkyLTQuOTEtMTAuMy00LjkxLTUuMzksMC04LjEzLDEuOTgtOC4xMyw0Ljk2WiIvPgogICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTQzNi40Myw2MTguNDFoLTEzLjk0di00LjI1aDMyLjQ1djQuMjVoLTEzLjk0djI5LjI5aC00LjU4di0yOS4yOVoiLz4KICAgICAgICA8Zz4KICAgICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTQ4Ni42MSw2MzkuNjNoLTE3Ljg1bC0zLjczLDguMDhoLTQuNTRsMTUuNS0zMy43M2gzLjY0bDE1LjU0LDMzLjczaC00LjgybC0zLjc0LTguMDhaTTQ4NC43Miw2MzUuNDdsLTcuMDQtMTUuMzEtNy4wNCwxNS4zMWgxNC4wOFoiLz4KICAgICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTUyOC45OSw2MTQuMTdoNC41NHYxOS4zNmMwLDguMTMtNS4xNSwxNC43NS0xNC43OCwxNC43NXMtMTQuODQtNi41Mi0xNC44NC0xNC43NXYtMTkuMzZoNC41OHYxOC45OWMwLDYuMzcsMy42NCwxMC43MiwxMC4yNSwxMC43MnMxMC4yNS00LjM1LDEwLjI1LTEwLjcydi0xOC45OVoiLz4KICAgICAgICA8L2c+CiAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTQ1LjkyLDYxNC4xN2gxNy44MWM3LjIzLDAsMTEuMDYsMy4yNiwxMS4wNiw5LjQ5LDAsNC40NC0yLjQxLDcuNTEtNi44NSw4LjY1bDguMTMsMTUuNGgtNC44NmwtOC4wMy0xNC45M2gtMTIuNjZ2MTQuOTNoLTQuNTh2LTMzLjU0Wk01NTAuNDksNjE4LjQxdjEwLjE2aDEzLjA5YzQuMywwLDYuNDctMS41MSw2LjQ3LTQuOTEsMC0zLjY0LTIuMTgtNS4yNS02LjQ3LTUuMjVoLTEzLjA5WiIvPgogICAgICAgIDxnPgogICAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNjA4LjQyLDYzOS42M2gtMTcuODZsLTMuNzMsOC4wOGgtNC41NGwxNS41LTMzLjczaDMuNjNsMTUuNTQsMzMuNzNoLTQuODJsLTMuNzMtOC4wOFpNNjA2LjUzLDYzNS40N2wtNy4wNC0xNS4zMS03LjA0LDE1LjMxaDE0LjA4WiIvPgogICAgICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNjU2LjEsNjQ3Ljk1aC0zLjI2bC0yMi41OC0yOC4zOXYyOC4xNWgtNC4zOXYtMzMuNTRoNS41N2wyMC4yNywyNS43di0yNS43aDQuMzl2MzMuNzhaIi8+CiAgICAgICAgPC9nPgogICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTY3OS4yNSw2MTguNDFoLTEzLjk0di00LjI1aDMyLjQ1djQuMjVoLTEzLjk0djI5LjI5aC00LjU4di0yOS4yOVoiLz4KICAgICAgPC9nPgogICAgPC9nPgogIDwvZz4KPC9zdmc+" alt="Casa Lavanda">
+        </header>
+        <div class="sv-body">
+            <h1 id="sv-title">Misafir Değerlendirmesi</h1>
+            <p class="sv-intro" id="sv-intro">Bizi tercih ettiğiniz için teşekkür ederiz. Deneyiminizi birkaç saniyede paylaşır mısınız?</p>
+            <form id="survey-form" novalidate>
+                <fieldset class="sv-group">
+                    <legend id="sv-q1">Restoran hizmetimizi nasıl puanlarsınız?</legend>
+                    <div class="sv-stars" id="sv-stars">
+                        <button type="button" data-value="1" aria-label="1 yıldız">★</button>
+                        <button type="button" data-value="2" aria-label="2 yıldız">★</button>
+                        <button type="button" data-value="3" aria-label="3 yıldız">★</button>
+                        <button type="button" data-value="4" aria-label="4 yıldız">★</button>
+                        <button type="button" data-value="5" aria-label="5 yıldız">★</button>
+                    </div>
+                </fieldset>
+                <fieldset class="sv-group">
+                    <legend id="sv-q2">En çok neyi beğendiniz?</legend>
+                    <div class="sv-chips" id="sv-chips">
+                        <button type="button">Yemekler</button>
+                        <button type="button">Hizmet</button>
+                        <button type="button">Atmosfer</button>
+                        <button type="button">Manzara</button>
+                    </div>
+                </fieldset>
+                <div id="sv-note" role="status"></div>
+                <button type="submit" id="sv-submit">Gönder</button>
+            </form>
+            <p class="sv-foot">Yanıtlarınız hizmet kalitemizi geliştirmek için kullanılır.</p>
+        </div>
     </div>
+
+    <div id="breach-screen">
+        <div>[UYARI] SİSTEME YETKİSİZ<br>ERİŞİM TESPİT EDİLDİ</div>
+        <div class="breach-sub">&gt; Kontrol devralınıyor...</div>
+    </div>
+
+    <div id="tap-hint">Yazmak için ekrana dokun</div>
 
     <div id="terminal-window">
         <div id="console"></div>
         <span class="cursor" id="cursor"></span>
     </div>
 
-    <input type="text" id="hidden-input" autocomplete="off" spellcheck="false">
+    <input type="text" id="hidden-input" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go">
 
     <script>
         const consoleDiv = document.getElementById('console');
@@ -353,6 +553,7 @@
                             await runPart2Sequence();
                         } else {
                             await typeText("\n<span class='error'>[HATA] Geçersiz Yetki Anahtarı. Erişim Reddedildi. Lütfen çiçeklerdeki gizemi tekrar kontrol et.</span>\n\nC:\\Sistem\\Kritik_Giriş> Lütfen 4 haneli dekoder anahtarını giriniz: ", 20);
+                            showTapHint();
                         }
                     }
                     else if (currentState === "AWAITING_ANSWER") {
@@ -365,13 +566,27 @@
                             fireConfetti();
                         } else {
                             await typeText("\n<span class='error'>[KRİTİK UYARI]: Bu sunucuda sensiz bir dünya senaryosu [NullReferenceException] hatası vermektedir.</span>\n> Geleceğini mühürlemek için 'EVET' yazarak onay verin: ", 30);
+                            showTapHint();
                         }
                     }
                 }
             }
         });
 
-        document.addEventListener('click', () => { hiddenInput.focus(); });
+        function isAwaitingInput() {
+            return currentState === "AWAITING_PASSWORD" || currentState === "AWAITING_ANSWER";
+        }
+
+        function showTapHint() {
+            document.body.classList.add('show-tap-hint');
+        }
+
+        document.addEventListener('click', () => {
+            if (!isAwaitingInput()) return;
+            document.body.classList.remove('show-tap-hint');
+            hiddenInput.blur();
+            hiddenInput.focus();
+        });
 
         // SİNEMATİK AKIŞ - ETAP 1 (INTRO)
         async function runIntroSequence() {
@@ -410,6 +625,7 @@
             await typeText("C:\\Sistem\\Kritik_Giriş> Lütfen 4 haneli dekoder anahtarını giriniz: ", 40);
             
             currentState = "AWAITING_PASSWORD";
+            showTapHint();
         }
 
         // SİNEMATİK AKIŞ - ETAP 2 (ŞİFREDEN SONRA)
@@ -501,6 +717,7 @@
             consoleDiv.innerHTML = currentLine; 
 
             currentState = "AWAITING_ANSWER";
+            showTapHint();
         }
 
         function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
@@ -522,14 +739,71 @@
 
         function randomInRange(min, max) { return Math.random() * (max - min) + min; }
 
+        // ANKET VE HACKLENME GEÇİŞİ
+        const surveyScreen = document.getElementById('survey-screen');
+        const breachScreen = document.getElementById('breach-screen');
+        const submitBtn = document.getElementById('sv-submit');
+        const surveyNote = document.getElementById('sv-note');
+        const stars = [...document.querySelectorAll('#sv-stars button')];
+        const chips = [...document.querySelectorAll('#sv-chips button')];
+        let rating = 0;
         let started = false;
-        document.getElementById('start-btn').addEventListener('click', function (e) {
-            e.stopPropagation();
+
+        stars.forEach(star => star.addEventListener('click', () => {
+            rating = Number(star.dataset.value);
+            stars.forEach(s => s.classList.toggle('on', Number(s.dataset.value) <= rating));
+            surveyNote.textContent = '';
+        }));
+
+        chips.forEach(chip => chip.addEventListener('click', () => {
+            chips.forEach(c => c.classList.toggle('on', c === chip));
+        }));
+
+        function scrambleSurvey() {
+            const pool = "#$@!1998&%?*01XYZK";
+            const targets = ['sv-title', 'sv-intro', 'sv-q1', 'sv-q2'].map(id => document.getElementById(id));
+            return setInterval(() => {
+                targets.forEach(el => {
+                    el.textContent = el.textContent.split('').map(ch =>
+                        ch === ' ' || Math.random() > 0.35 ? ch : pool[Math.floor(Math.random() * pool.length)]
+                    ).join('');
+                });
+            }, 90);
+        }
+
+        async function runHackTransition() {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Gönderiliyor…';
+            await sleep(1500);
+
+            surveyNote.textContent = 'Bağlantı hatası (0x1998). Yanıt kaydedilemedi.';
+            surveyScreen.classList.add('sv-glitch');
+            const scrambler = scrambleSurvey();
+            await sleep(1500);
+
+            clearInterval(scrambler);
+            breachScreen.classList.add('active');
+            surveyScreen.classList.remove('sv-glitch');
+            surveyScreen.classList.add('hidden');
+            document.title = 'Sistem Terminali - Ana Çekirdek';
+            await sleep(1900);
+
+            breachScreen.classList.add('hidden');
+            await sleep(600);
+            surveyScreen.remove();
+            breachScreen.remove();
+            runIntroSequence();
+        }
+
+        document.getElementById('survey-form').addEventListener('submit', function (e) {
+            e.preventDefault();
             if (started) return;
+            if (!rating) {
+                surveyNote.textContent = 'Lütfen bir puan seçin.';
+                return;
+            }
             started = true;
-            document.getElementById('boot-screen').classList.add('hidden');
-            hiddenInput.focus();
-            setTimeout(runIntroSequence, 600);
+            runHackTransition();
         });
     </script>
 </body>
