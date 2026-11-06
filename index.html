@@ -428,6 +428,77 @@
             line-height: 1.4;
         }
 
+        /* KALBE İNİŞ */
+        #breach-descent {
+            position: absolute;
+            inset: 0;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 26px;
+            padding: 24px;
+            box-sizing: border-box;
+            color: #00ff66;
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.5;
+            text-shadow: 0 0 12px rgba(0, 255, 102, 0.6);
+        }
+        #breach-descent.on {
+            display: flex;
+        }
+        #descent-text {
+            min-height: 110px;
+            transition: opacity 0.5s ease;
+        }
+        #descent-text div + div {
+            margin-top: 14px;
+        }
+        #descent-heart {
+            width: 72px;
+            height: 72px;
+            color: #ff3366;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            filter: drop-shadow(0 0 14px rgba(255, 51, 102, 0.8));
+        }
+        #descent-heart.on {
+            opacity: 1;
+        }
+        #descent-heart.zoom {
+            transform: scale(45);
+            transition: transform 1.8s cubic-bezier(0.7, 0, 0.9, 0.5);
+        }
+        #descent-heart .beat {
+            width: 100%;
+            height: 100%;
+            animation: heartBeat 0.95s ease-in-out infinite;
+        }
+        #descent-heart svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.22); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.14); }
+            60% { transform: scale(1); }
+        }
+        #descent-layer {
+            min-height: 22px;
+            font-size: 14px;
+            letter-spacing: 2px;
+            transition: opacity 0.5s ease;
+        }
+        #breach-descent.leaving #descent-text,
+        #breach-descent.leaving #descent-layer {
+            opacity: 0;
+        }
+
         /* TELEFONDA KLAVYE İPUCU */
         #tap-hint {
             display: none;
@@ -524,6 +595,15 @@
             <div id="breach-progress"></div>
         </div>
         <div id="breach-hello"></div>
+        <div id="breach-descent">
+            <div id="descent-text"></div>
+            <div id="descent-heart">
+                <div class="beat">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                </div>
+            </div>
+            <div id="descent-layer"></div>
+        </div>
     </div>
 
     <div id="tap-hint">Yazmak için ekrana dokun</div>
@@ -1048,7 +1128,35 @@
             }
             await sleep(900);
 
-            // 9. Asıl hikaye başlar
+            // 9. Kalbe iniş: yeni sayfa, katmanlar, kalbin içine giriş
+            hello.classList.remove('on');
+            await sleep(900);
+
+            const descent = document.getElementById('breach-descent');
+            const descentText = document.getElementById('descent-text');
+            const descentHeart = document.getElementById('descent-heart');
+            const descentLayer = document.getElementById('descent-layer');
+            descent.classList.add('on');
+            for (const text of ['Sisteme giriş yapıyorum...', "Enes'in kalbinin en derin köşesine iniyorum..."]) {
+                const line = document.createElement('div');
+                descentText.appendChild(line);
+                await typeInto(line, text, 70);
+                await sleep(1200);
+            }
+
+            descentHeart.classList.add('on');
+            await sleep(900);
+            for (const layer of ['KATMAN 1: BİLİNÇ', 'KATMAN 2: ANILAR', 'KATMAN 3: KALP']) {
+                descentLayer.textContent = layer;
+                await sleep(1200);
+            }
+
+            descent.classList.add('leaving');
+            await sleep(500);
+            descentHeart.classList.add('zoom');
+            await sleep(1800);
+
+            // 10. Asıl hikaye başlar
             breachScreen.classList.add('hidden');
             await sleep(700);
             breachScreen.remove();
